@@ -1,0 +1,7 @@
+<%- @arguments.each do |name, value| -%>
+ARG <%= name %> <%= value %>
+<% end -%>
+
+<%- @stages.each do |_, stage| -%>
+<%= stage %>
+<% end -%>
