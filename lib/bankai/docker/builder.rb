@@ -16,8 +16,13 @@ module Bankai
         @name = File.name
         @layers = File.stages.map(&:first)
         @dockerfile = Tempfile.new('Dockerfile')
+        @dockerignore = Tempfile.new('.dockerignore')
+        @dockerignore_generated = false
 
         setup_dockerfile
+        setup_dockerignore
+
+        at_exit { clear_up }
       end
 
       def install
@@ -31,10 +36,29 @@ module Bankai
         @dockerfile.rewind
       end
 
+      def setup_dockerignore
+        # TODO: Provide DSL to generate it
+        ignore_file = Rails.root.join('.dockerignore')
+        return if ignore_file.exist?
+
+        @dockerignore.write ['.git', 'node_modules'].join("\n")
+        @dockerignore.rewind
+        FileUtils.cp(@dockerignore.path, ignore_file)
+        @dockerignore_generated = true
+      end
+
+      def clear_up
+        ignore_file = Rails.root.join('.dockerignore')
+        return unless ignore_file.exist?
+        return unless @dockerignore_generated
+
+        ignore_file.unlink
+      end
+
       private
 
       def cache_options
-        @cache_options ||= @layers.map do |target|
+        @cache_options = @layers.map do |target|
           "--cache-from #{@name}:#{target}"
         end.join(' ')
       end
@@ -43,6 +67,7 @@ module Bankai
         @layers.each do |target|
           stage = File.stages[target]
           task target do
+            @name ||= File.instance.ensure_name
             sh command(stage)
           end
         end
