@@ -21,11 +21,17 @@ module Bankai
 
       def initialize(name, from: nil, &block)
         @name = name
-        @from = from || "ruby:#{RUBY_VERSION}-alpine"
+        @from = from || "ruby:#{::RUBY_VERSION}-alpine"
         @index = main? ? 999 : Stage.next_index
         @commands = []
         @arguments = {}
         instance_eval(&block)
+      end
+
+      def tag
+        return File.name if main?
+
+        "#{File.name}:#{@name}"
       end
 
       def main?

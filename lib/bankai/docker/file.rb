@@ -16,6 +16,10 @@ module Bankai
           instance.name
         end
 
+        def stages
+          instance.stages
+        end
+
         def print
           instance.to_s
         end
@@ -44,6 +48,7 @@ module Bankai
       def stage(name, from: nil, &block)
         name = name.to_sym
         @stages[name] = Stage.new(name, from: from, &block)
+        @stages = @stages.sort_by { |_, stage| stage.index }.to_h
       end
 
       def main(from: nil, &block)

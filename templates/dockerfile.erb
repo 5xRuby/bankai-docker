@@ -1,5 +1,5 @@
 <%- @arguments.each do |name, value| -%>
-ARG <%= name %> <%= value %>
+ARG <%= name %><%= value.nil? ? '' : "=#{value}"  %>
 <% end -%>
 
 <%- @stages.each do |_, stage| -%>
