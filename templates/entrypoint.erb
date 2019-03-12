@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+command = ARGV.first
+case command
+when 'serve'
+  system('rake assets:precompile') unless ENV['RAILS_SERVE_STATIC_FILES'].nil?
+  exec('bundle exec puma -p 80')
+else
+  exec(ARGV.join(' '))
+end

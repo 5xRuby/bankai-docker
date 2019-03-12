@@ -21,7 +21,10 @@ Bankai::Docker.setup do
   end
 
   main do
-    run 'apk add --no-cache tzdata postgresql-libs libcurl'
+    # Requirements
+    # node - libstdc++
+    # yarn - git
+    run 'apk add --no-cache tzdata postgresql-libs libstdc++ libcurl git'
     run 'mkdir -p /src/app'
 
     copy '/usr/local/bin/node', '/usr/local/bin/', from: :node
@@ -38,6 +41,11 @@ Bankai::Docker.setup do
 
     env 'RAILS_ENV=production'
     run 'rails app:update:bin && rm -rf /src/app/tmp'
+
+    expose 80
+
+    entrypoint './bin/docker-entrypoint'
+    cmd 'serve'
   end
 end
 # rubocop:enable Metrics/BlockLength
