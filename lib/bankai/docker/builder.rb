@@ -42,7 +42,7 @@ module Bankai
         ignore_file = Rails.root.join('.dockerignore')
         return if ignore_file.exist?
 
-        @dockerignore.write ['.git', 'node_modules'].join("\n")
+        @dockerignore.write ['.git', 'node_modules', 'log/*', 'tmp/*'].join("\n")
         @dockerignore.rewind
         FileUtils.cp(@dockerignore.path, ignore_file)
         @dockerignore_generated = true
