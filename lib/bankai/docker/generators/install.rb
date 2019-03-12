@@ -8,7 +8,7 @@ module Bankai
       # :nodoc:
       class InstallGenerator < Base
         def setup_config
-          template 'docker.rb.erb', 'config/docker.rb'
+          template 'default.rb', 'config/docker.rb'
         end
       end
     end
