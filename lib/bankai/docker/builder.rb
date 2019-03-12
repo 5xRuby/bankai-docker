@@ -13,6 +13,7 @@ module Bankai
       end
 
       def initialize
+        # TODO: Load name when running task
         @name = File.name
         @layers = File.stages.map(&:first)
         @dockerfile = Tempfile.new('Dockerfile')
@@ -28,7 +29,7 @@ module Bankai
       def install
         namespace(:build) { install_build_tasks }
         desc 'Build docker image'
-        task build: @layers.map { |name| "build:#{name}" }
+        task :build, [:name] => @layers.map { |name| "build:#{name}" }
       end
 
       def setup_dockerfile
@@ -66,8 +67,9 @@ module Bankai
       def install_build_tasks
         @layers.each do |target|
           stage = File.stages[target]
-          task target do
-            @name ||= File.instance.ensure_name
+          task target, :name do |_, args|
+            File.instance.update_name(args[:name])
+            @name ||= File.name
             sh command(stage)
           end
         end

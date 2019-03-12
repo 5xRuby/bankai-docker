@@ -60,16 +60,9 @@ module Bankai
         @stages[:main] = Stage.new(:main, from: from, &block)
       end
 
-      def ensure_name
-        return @name unless @name.nil?
-
+      def update_name(default = nil)
         app_name = Rails.app_class.parent_name.demodulize.underscore.dasherize
-        default_name = "#{`whoami`.chomp}/#{app_name}"
-        print "Docker Image Name (#{default_name}) > "
-        input = STDIN.gets.chomp
-        @name = default_name
-        @name = input unless input.empty?
-        @name
+        @name = @name || default || "#{`whoami`.chomp}/#{app_name}"
       end
 
       def to_s
