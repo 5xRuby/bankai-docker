@@ -1,8 +1,9 @@
-# Bankai::Docker
+Bankai Docker
+===
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/bankai/docker`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem is extension for [Bankai](https://github.com/5xruby/bankai) to build production ready docker image.
 
-TODO: Delete this and the text above, and describe your gem
+> By the default docker image will have size about 180MB includes Ruby, Node.js, Yarn and Required Gems for Rails
 
 ## Installation
 
@@ -12,17 +13,42 @@ Add this line to your application's Gemfile:
 gem 'bankai-docker'
 ```
 
-And then execute:
+Then the docker related generator and rake task will added to your project.
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install bankai-docker
 
 ## Usage
 
-TODO: Write usage instructions here
+This gem will try to setup Dockerfile and .dockerignore for your project, so you can direct use this Rake task to build docker image:
+
+```
+rake docker:build
+```
+
+By the default, we will use the `$(whoami)/[RAILS_APP_NAME]` as docker image ex. `5xruby/example` but you can specify it if you want
+
+```
+rake docker:build[mycompany/example]
+```
+
+If you want to use our DSL to define the Dockerfile generate, you can edit `config/docker.rb` to defined it.
+
+```
+# Generate config/docker.rb
+rails generate bankai:docker:install
+# Edit it
+vim config/docker.rb
+```
+
+## Roadmap
+
+* [ ] Auto detect Dockerfile
+* [ ] Auto detect .dockerignore
+* [ ] Auto package install detect from Gemfile
+* [ ] DSL
+  * [ ] Gem Install
+  * [ ] Specify Ruby/Node Version
+  * [ ] Package Install
+  * [ ] Rails Commands
 
 ## Development
 
@@ -32,8 +58,8 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/bankai-docker. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/5xruby/bankai-docker. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## Code of Conduct
 
-Everyone interacting in the Bankai::Docker project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/bankai-docker/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Bankai::Docker project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/5xruby/bankai-docker/blob/master/CODE_OF_CONDUCT.md).
