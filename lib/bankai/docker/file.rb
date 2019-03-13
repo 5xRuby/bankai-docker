@@ -60,6 +60,16 @@ module Bankai
         @stages[:main] = Stage.new(:main, from: from, &block)
       end
 
+      def package(stage, *packages, runtime: true)
+        Package.use(stage) do |instance|
+          instance.add_dependency(*packages, runtime: runtime)
+        end
+      end
+
+      def runtime_package(*packages)
+        Package.instance.add_runtime_dependency(*packages)
+      end
+
       def update_name(default = nil)
         app_name = Rails.app_class.parent_name.demodulize.underscore.dasherize
         @name = @name || default || "#{`whoami`.chomp}/#{app_name}"
