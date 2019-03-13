@@ -42,6 +42,22 @@ module Bankai
         def volume(*volumes)
           command 'volume', *volumes, mode: :array
         end
+
+        def package(*packages, runtime: true)
+          Package.use(@name) do |instance|
+            instance.add_dependency(*packages, runtime: runtime)
+          end
+        end
+
+        def runtime_package(*packages)
+          Package.instance.add_runtime_dependency(*packages)
+        end
+
+        def package_command
+          return unless Package.any?(@name)
+
+          "RUN #{Package.command_for @name}"
+        end
       end
     end
   end

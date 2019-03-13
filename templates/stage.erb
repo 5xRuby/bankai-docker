@@ -2,6 +2,7 @@ FROM <%= @from %><%= @name == :main ? '' : " AS #{@name}" %>
 <% @arguments.each do |name, value| -%>
 ARG <%= name %><%= value.nil? ? '' : "=#{value}" %>
 <% end %>
+<%= package_command %>
 <%- @commands.each do |command| -%>
 <%= command %>
 <% end -%>
