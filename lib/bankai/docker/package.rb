@@ -11,6 +11,14 @@ module Bankai
           instance.switch(name, &block)
         end
 
+        def register(name, stage, &block)
+          instance.register(name, stage, &block)
+        end
+
+        def detect
+          instance.detect
+        end
+
         def any?(name)
           !instance.stages[name.to_sym].nil?
         end
@@ -32,6 +40,7 @@ module Bankai
         @command = 'apk add --no-cache %<packages>s'
         @mutex = Mutex.new
         @stages = {}
+        @autos = {}
 
         @current_stage = :main
       end
@@ -56,6 +65,16 @@ module Bankai
 
       def current_stage
         stage(@current_stage)
+      end
+
+      def register(name, stage, &block)
+        @autos[name.to_sym] = [stage.to_sym, block]
+      end
+
+      def detect
+        @autos.each do |_, (stage, fn)|
+          switch(stage, &fn)
+        end
       end
 
       def stage(name)

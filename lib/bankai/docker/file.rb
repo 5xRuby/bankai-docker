@@ -33,6 +33,7 @@ module Bankai
       include Singleton
       include DSL::Name
       include DSL::Argument
+      include DSL::Gemfile
 
       attr_reader :stages
 
@@ -70,12 +71,17 @@ module Bankai
         Package.instance.add_runtime_dependency(*packages)
       end
 
+      def detect_package(name, stage, &block)
+        Package.register(name, stage, &block)
+      end
+
       def update_name(default = nil)
         app_name = Rails.app_class.parent_name.demodulize.underscore.dasherize
         @name = @name || default || "#{`whoami`.chomp}/#{app_name}"
       end
 
       def to_s
+        Package.detect
         root = Bankai::Docker::Generators::Base.default_source_root
         template = ERB.new(::File.read("#{root}/dockerfile.erb"), nil, '-')
         template.result(binding)

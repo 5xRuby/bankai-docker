@@ -4,7 +4,7 @@
 Bankai::Docker.setup do
   stage :gem do
     package 'build-base', 'ca-certificates', 'zlib-dev', 'libressl-dev',
-            'postgresql-dev', runtime: false
+            runtime: false
 
     run 'mkdir -p /src/app'
 
@@ -24,7 +24,7 @@ Bankai::Docker.setup do
     # Requirements
     # node - libstdc++
     # yarn - git
-    runtime_package 'tzdata', 'postgresql-libs', 'libstdc++', 'libcurl', 'git'
+    runtime_package 'tzdata', 'libstdc++', 'libcurl', 'git'
     run 'mkdir -p /src/app'
 
     copy '/usr/local/bin/node', '/usr/local/bin/', from: :node
