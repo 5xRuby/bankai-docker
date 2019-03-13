@@ -43,11 +43,11 @@ vim config/docker.rb
 
 * [ ] Auto detect Dockerfile
 * [ ] Auto detect .dockerignore
-* [ ] Auto package install detect from Gemfile
+* [x] Auto package install detect from Gemfile
 * [ ] DSL
   * [ ] Gem Install
   * [ ] Specify Ruby/Node Version
-  * [ ] Package Install
+  * [x] Package Install
   * [ ] Rails Commands
 
 ## Development

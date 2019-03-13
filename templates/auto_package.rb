@@ -9,7 +9,7 @@ Bankai::Docker.setup do
 
     if mysql?
       package.add_dependency 'mariadb-dev', runtime: false
-      package.add_runtime_dependency 'mariadb-libs'
+      package.add_runtime_dependency 'mariadb-client-libs'
     end
   end
 end
