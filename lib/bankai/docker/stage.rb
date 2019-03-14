@@ -57,6 +57,16 @@ module Bankai
         template.result(binding)
       end
 
+      def produce(source, destination = nil)
+        Copy.add(@name, source, destination || source)
+      end
+
+      def copies
+        return unless main?
+
+        Copy.to_s
+      end
+
       private
 
       def ensure_executed
