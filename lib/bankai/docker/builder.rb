@@ -77,14 +77,13 @@ module Bankai
       private
 
       def cache_options
-        @cache_options = @layers.map do |target|
-          "--cache-from #{@name}:#{target}"
+        @cache_options = File.stages.map do |_, stage|
+          "--cache-from #{stage.tag}"
         end.join(' ')
       end
 
       def install_build_tasks
-        @layers.each do |target|
-          stage = File.stages[target]
+        File.stages.each do |target, stage|
           task target, :name do |_, args|
             File.instance.update_name(args[:name])
             @name ||= File.name
