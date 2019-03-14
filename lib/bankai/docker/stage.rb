@@ -25,7 +25,9 @@ module Bankai
         @index = main? ? 999 : Stage.next_index
         @commands = []
         @arguments = {}
-        instance_eval(&block)
+        @block = block
+        @mutex = Mutex.new
+        @executed = false
       end
 
       def tag
@@ -49,9 +51,21 @@ module Bankai
       end
 
       def to_s
+        ensure_executed
         root = Bankai::Docker::Generators::Base.default_source_root
         template = ERB.new(::File.read("#{root}/stage.erb"), nil, '-')
         template.result(binding)
+      end
+
+      private
+
+      def ensure_executed
+        return if @executed
+
+        @mutex.synchronize do
+          instance_eval(&@block)
+          @executed = true
+        end
       end
     end
   end
