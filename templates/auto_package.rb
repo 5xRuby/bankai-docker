@@ -11,9 +11,9 @@ Bankai::Docker.setup do
       package.add_dependency 'mariadb-dev', runtime: false
       package.add_runtime_dependency 'mariadb-client-libs'
     end
+  end
 
-    if gem?('sassc')
-      package.add_runtime_dependency 'libstdc++'
-    end
+  detect_package :sassc, :gem do |package|
+    package.add_runtime_dependency 'libstdc++' if gem?('sassc')
   end
 end
