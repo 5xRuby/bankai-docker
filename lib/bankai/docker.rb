@@ -6,6 +6,7 @@ require 'bankai/docker/package'
 require 'bankai/docker/file'
 require 'bankai/docker/stage'
 require 'bankai/docker/command'
+require 'bankai/docker/copy'
 
 module Bankai
   # :nodoc:

@@ -16,19 +16,20 @@ Bankai::Docker.setup do
     workdir '/src/app'
     run 'bundle install --deployment --without development test ' \
         '--no-cache --clean && rm -rf vendor/bundle/ruby/**/cache'
+
+    produce '/src/app/vendor/bundle'
+    produce '/usr/local/bundle/config'
   end
 
   stage :node, from: 'node:10.15.2-alpine' do
     run 'mv /opt/yarn-v${YARN_VERSION} /opt/yarn'
+
+    produce '/usr/local/bin/node'
+    produce '/opt/yarn'
   end
 
   main do
     run 'mkdir -p /src/app'
-
-    copy '/usr/local/bin/node', '/usr/local/bin/', from: :node
-    copy '/opt/yarn', '/opt/yarn', from: :node
-    copy '/src/app/vendor/bundle', '/src/app/vendor/bundle', from: :gem
-    copy '/usr/local/bundle/config', '/usr/local/bundle/config', from: :gem
 
     env 'PATH=/opt/yarn/bin:/src/app/bin:$PATH'
     env 'RAILS_ENV=production'

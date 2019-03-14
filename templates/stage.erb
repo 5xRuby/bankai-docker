@@ -1,8 +1,9 @@
-FROM <%= @from %><%= @name == :main ? '' : " AS #{@name}" %>
-<% @arguments.each do |name, value| -%>
+FROM <%= @from %><%= main? ? '' : " AS #{@name}" %>
+<% @arguments.each do |name, value| %>
 ARG <%= name %><%= value.nil? ? '' : "=#{value}" %>
-<% end %>
+<% end -%>
 <%= package_command %>
-<%- @commands.each do |command| -%>
+<%= copies %>
+<% @commands.each do |command| -%>
 <%= command %>
 <% end -%>
