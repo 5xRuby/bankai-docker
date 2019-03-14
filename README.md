@@ -48,7 +48,8 @@ vim config/docker.rb
   * [ ] Gem Install
   * [ ] Specify Ruby/Node Version
   * [x] Package Install
-  * [ ] Rails Commands
+  * [ ] Bundle / Rake / Rails Commands
+  * [ ] Auto `COPY --from` rules
 
 ## Development
 
