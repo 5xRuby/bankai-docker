@@ -2,6 +2,8 @@
 
 # rubocop:disable Metrics/BlockLength
 Bankai::Docker.setup do
+  runtime_package 'tzdata', 'libstdc++', 'git'
+
   stage :gem do
     package 'build-base', 'ca-certificates', 'zlib-dev', 'libressl-dev',
             runtime: false
@@ -21,30 +23,22 @@ Bankai::Docker.setup do
   end
 
   main do
-    # Requirements
-    # node - libstdc++
-    # yarn - git
-    runtime_package 'tzdata', 'libstdc++', 'libcurl', 'git'
     run 'mkdir -p /src/app'
 
     copy '/usr/local/bin/node', '/usr/local/bin/', from: :node
     copy '/opt/yarn', '/opt/yarn', from: :node
-
-    env 'PATH=/opt/yarn/bin:/src/app/bin:$PATH'
-
-    add '.', '/src/app'
-
     copy '/src/app/vendor/bundle', '/src/app/vendor/bundle', from: :gem
     copy '/usr/local/bundle/config', '/usr/local/bundle/config', from: :gem
 
-    workdir '/src/app'
-
+    env 'PATH=/opt/yarn/bin:/src/app/bin:$PATH'
     env 'RAILS_ENV=production'
-    run 'rails app:update:bin && rm -rf /src/app/tmp'
+
+    add '.', '/src/app'
+    workdir '/src/app'
 
     expose 80
 
-    entrypoint './bin/docker-entrypoint'
+    entrypoint 'docker-entrypoint'
     cmd 'serve'
   end
 end
