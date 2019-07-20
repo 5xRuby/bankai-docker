@@ -5,14 +5,6 @@ module Bankai
     module DSL
       # Gemfile detect
       module Gemfile
-        def pg?
-          gemfile.match?(/gem .pg./)
-        end
-
-        def mysql?
-          gemfile.match?(/gem .mysql2./)
-        end
-
         def gem?(name)
           gemfile.match?(/gem .#{name}./)
         end
