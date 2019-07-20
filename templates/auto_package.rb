@@ -16,4 +16,8 @@ Bankai::Docker.setup do
   detect_package :sassc, :gem do |package|
     package.add_runtime_dependency 'libstdc++' if gem?('sassc')
   end
+
+  detect_package :mini_magick, :gem do |package|
+    package.add_runtime_dependency 'imagemagick' if gem?('mini_magick')
+  end
 end
