@@ -6,7 +6,7 @@ module Bankai
       # Gemfile detect
       module Gemfile
         def gem?(name)
-          gemfile.match?(/gem .#{name}./)
+          gemfile.match?(/^\s*gem .#{name}./)
         end
 
         private
